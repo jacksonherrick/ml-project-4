@@ -3,6 +3,8 @@ import numpy as np
 import sklearn as sk
 from collections import defaultdict
 from sklearn.neighbors import KNeighborsRegressor as knnregressor
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import mean_squared_error as MSE
 
 def parse_data(posts_train_file, posts_test_file, graph_file):
 
@@ -77,9 +79,23 @@ def run_learner():
     #print(predictions)
     #print(targets_test)
 
+def grid_search(learner, params):
+    #Search through different paramater combinations for a learner 
+    X_tr, X_te, y_tr, y_te = setup_data()
+    n = GridSearchCV(learner, params, cv=5, scoring='neg_mean_squared_error')
+    n.fit(X_tr, y_tr)
+    best = n.best_estimator_
+    print(best)
+    y_pr = best.predict(X_te)
+    print(y_pr)
+    print(y_te)
+    print(np.sqrt(MSE(y_te, y_pr)))
 
 if __name__ == "__main__":
-    run_learner()
+    #run_learner()
+    learner = knnregressor()
+    params = {'n_neighbors': (3, 5, 10), 'weights': ('uniform', 'distance')}
+    grid_search(learner, params)
 
 
 
