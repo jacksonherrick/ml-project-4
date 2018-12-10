@@ -182,14 +182,16 @@ def grid_search(learner, params):
     print(y_te)
     print(np.sqrt(MSE(y_te, y_pr)))
 
+def run_grid_search():
+    learner = knnregressor()
+    params = {'n_neighbors': (3, 10, 20, 30), 'weights': ('uniform', 'distance')}
+    grid_search(learner, params)
+
 if __name__ == "__main__":
-    #print("No Grid Search: \n\n")
     run_learner_test()
     #run_learner_train()
-    #print("Grid Search: \n\n")
-    #learner = knnregressor()
-    #params = {'n_neighbors': (3, 10, 20, 30), 'weights': ('uniform', 'distance')}
-    #grid_search(learner, params)
+    #run_grid_search
+
 
 
 
